@@ -6,6 +6,10 @@ public class Human {
 	String fullName;
 	double weight;
 	
+//	public Human(){
+//		
+//	}
+	
 	public Human(int a, String f, double w){
 		setAge(a);
 		setFullName(f);
