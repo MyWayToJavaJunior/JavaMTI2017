@@ -5,12 +5,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
@@ -65,13 +68,36 @@ public class JdbcRunner {
 								"where emp.deptno = dept.deptno " +
 								"order by emp.empno desc")) {
 					rs.beforeFirst();
+					ResultSetMetaData rsmd = rs.getMetaData();
 					while(rs.next()) {
-						String line = rs.getString("ename") + " | " + rs.getInt("sal") + " | " +rs.getString("loc");
-						System.out.println(line);
+						String resultLine = "";
+						for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+							String line = "";
+							switch(rsmd.getColumnType(i)) {
+								case Types.INTEGER: {
+									int value = rs.getInt(i); //0 in real null;
+									if (rs.wasNull()){ // null
+										line = "";
+									}
+									else {
+										line = Integer.toString(value); 
+									}
+									break;
+								}
+								case Types.SMALLINT: line = Short.toString(rs.getShort(i)); break;
+								default:
+									line = rs.getString(i); break;
+							}
+							resultLine += rsmd.getColumnName(i) + " : " + line;
+							
+						}
+						System.out.println(resultLine);
 					}
 				}
 				stat.close();
 				connection.commit();
+//				DatabaseMetaData dbmd = connection.getMetaData();
+				
 				
 				CallableStatement cStatement = connection.prepareCall("{ call raise_application_error(-20002, 'SQL Exception caused!') }");
 				cStatement.execute();
