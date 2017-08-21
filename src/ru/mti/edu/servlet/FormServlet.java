@@ -1,5 +1,7 @@
 package ru.mti.edu.servlet;
 
+import javax.ejb.EJB;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -18,8 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import ru.mti.edu.ejb.HelloEJBWorld;
+
 public class FormServlet extends HttpServlet {
 
+	@EJB
+	private HelloEJBWorld ejb;
+	
 	ServletConfig sc = null;
 	
 	@Override
@@ -64,6 +71,8 @@ public class FormServlet extends HttpServlet {
 				pw.println(sb.toString());
 				pw.println("<br/>");
 				pw.println(request.getAttribute("requestScope"));
+				pw.println("<br/>");
+				pw.println(ejb.helloWorld());
 				pw.println("</body>");
 				pw.println("</html>");
 				pw.flush();

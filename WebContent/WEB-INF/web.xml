@@ -31,11 +31,6 @@
     <url-pattern>/*</url-pattern>
     <servlet-name>FormServlet</servlet-name>
   </filter-mapping>
-  <!-- 
-  <listener>
-      <listener-class>ru.mti.edu.listener.ContextListener</listener-class>
-  </listener>
-   -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
