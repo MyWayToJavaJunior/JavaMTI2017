@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>JavaMTI2017</display-name>
-  
   <servlet>
-      <servlet-name>FormServlet</servlet-name>
-      <servlet-class>ru.mti.edu.servlet.FormServlet</servlet-class>
+    <servlet-name>FormServlet</servlet-name>
+    <servlet-class>ru.mti.edu.servlet.FormServlet</servlet-class>
+    <init-param>
+      <param-name>param</param-name>
+      <param-value>1.0.0</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-      <servlet-name>FormServlet</servlet-name>
-      <url-pattern>/form</url-pattern>
+    <servlet-name>FormServlet</servlet-name>
+    <url-pattern>/form</url-pattern>
   </servlet-mapping>
-  
+  <servlet>
+    <servlet-name>RequestDispatcherServlet</servlet-name>
+    <servlet-class>ru.mti.edu.servlet.RequestDispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RequestDispatcherServlet</servlet-name>
+    <url-pattern>/disp</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>FilterExample</filter-name>
+    <filter-class>ru.mti.edu.filter.FilterExample</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>FilterExample</filter-name>
+    <url-pattern>/*</url-pattern>
+    <servlet-name>FormServlet</servlet-name>
+  </filter-mapping>
+  <!-- 
+  <listener>
+      <listener-class>ru.mti.edu.listener.ContextListener</listener-class>
+  </listener>
+   -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -19,4 +44,23 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/login.html</form-login-page>
+      <form-error-page>/loginError.html</form-error-page>
+    </form-login-config>
+  </login-config>
+  <security-role>
+    <role-name>role1</role-name>
+  </security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <url-pattern>/form</url-pattern>
+      <http-method>GET</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>role1</role-name>
+    </auth-constraint>
+  </security-constraint>
 </web-app>
